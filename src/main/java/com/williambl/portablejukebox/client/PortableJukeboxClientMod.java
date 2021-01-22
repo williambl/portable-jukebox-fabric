@@ -5,12 +5,16 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.item.MusicDiscItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 @Environment(EnvType.CLIENT)
 public class PortableJukeboxClientMod implements ClientModInitializer {
@@ -27,7 +31,7 @@ public class PortableJukeboxClientMod implements ClientModInitializer {
                 client.getSoundManager().stop(oldSound);
 
             EntityFollowingSound sound = new EntityFollowingSound(
-                    client.getInstance().world.getPlayerByUuid(uuid),
+                    MinecraftClient.getInstance().world.getPlayerByUuid(uuid),
                     ((MusicDiscItem) Objects.requireNonNull(Registry.ITEM.get(new Identifier(buf.readString())))).getSound()
             );
             client.getSoundManager().play(sound);
