@@ -19,7 +19,10 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.williambl.portablejukebox.PortableJukebox"
+      "com.williambl.portablejukebox.PortableJukeboxMod"
+    ],
+    "client": [
+      "com.williambl.portablejukebox.client.PortableJukeboxClientMod"
     ]
   },
   "mixins": [
