@@ -4,13 +4,13 @@
   "version": "${version}",
 
   "name": "Portable Jukebox",
-  "description": "Adds just the portable jukebox and portable noteblock from Essential Features.",
+  "description": "Adds just the Portable Jukebox and Portable Note Block from Essential Features.",
   "authors": [
     "Will BL"
   ],
   "contact": {
-    "homepage": "",
-    "sources": ""
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/portable-jukebox-fabric",
+    "sources": "https://github.com/williambl/portable-jukebox-fabric"
   },
 
   "license": "MIT",
