@@ -1,0 +1,22 @@
+{
+  "result": {
+    "item": "portablejukebox:portable_note_block"
+  },
+  "pattern": [
+    "sps",
+    "prp",
+    "sps"
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "s": {
+      "tag": "c:wood_sticks"
+    },
+    "p": {
+      "tag": "minecraft:planks"
+    },
+    "r": {
+      "tag": "c:redstone_dusts"
+    }
+  }
+}
