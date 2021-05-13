@@ -25,25 +25,31 @@ public class PortableJukeboxClientMod implements ClientModInitializer {
     public void onInitializeClient() {
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("portablejukebox:play"), ((client, handler, buf, responseSender) -> {
             UUID uuid = buf.readUuid();
+            Identifier discId = new Identifier(buf.readString());
 
-            SoundInstance oldSound = PLAYING_SOUNDS.get(uuid);
-            if (oldSound != null)
-                client.getSoundManager().stop(oldSound);
+            client.send(() -> {
+                SoundInstance oldSound = PLAYING_SOUNDS.get(uuid);
+                if (oldSound != null)
+                    client.getSoundManager().stop(oldSound);
 
-            EntityFollowingSound sound = new EntityFollowingSound(
-                    MinecraftClient.getInstance().world.getPlayerByUuid(uuid),
-                    ((MusicDiscItem) Objects.requireNonNull(Registry.ITEM.get(new Identifier(buf.readString())))).getSound()
-            );
-            client.getSoundManager().play(sound);
-            PLAYING_SOUNDS.put(uuid, sound);
+                EntityFollowingSound sound = new EntityFollowingSound(
+                        MinecraftClient.getInstance().world.getPlayerByUuid(uuid),
+                        ((MusicDiscItem) Objects.requireNonNull(Registry.ITEM.get(discId))).getSound()
+                );
+                client.getSoundManager().play(sound);
+                client.getMusicTracker().stop();
+                PLAYING_SOUNDS.put(uuid, sound);
+            });
         }));
 
         ClientPlayNetworking.registerGlobalReceiver(new Identifier("portablejukebox:stop"), ((client, handler, buf, responseSender) -> {
             UUID uuid = buf.readUuid();
-            SoundInstance oldSound = PLAYING_SOUNDS.get(uuid);
-            if (oldSound != null)
-                client.getSoundManager().stop(oldSound);
-            PLAYING_SOUNDS.remove(uuid);
+            client.send(() -> {
+                SoundInstance oldSound = PLAYING_SOUNDS.get(uuid);
+                if (oldSound != null)
+                    client.getSoundManager().stop(oldSound);
+                PLAYING_SOUNDS.remove(uuid);
+            });
         }));
     }
 }
