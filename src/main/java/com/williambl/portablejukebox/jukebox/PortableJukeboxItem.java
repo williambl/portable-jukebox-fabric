@@ -8,9 +8,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerChunkManager;
-import net.minecraft.tag.ItemTags;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -40,8 +39,8 @@ public class PortableJukeboxItem extends Item {
 
         ItemStack stack = player.getStackInHand(handIn);
 
-        CompoundTag tag = stack.getOrCreateSubTag("Disc");
-        Item discItem = ItemStack.fromTag(tag).getItem();
+        NbtCompound tag = stack.getOrCreateSubTag("Disc");
+        Item discItem = ItemStack.fromNbt(tag).getItem();
 
         if (!(discItem instanceof MusicDiscItem))
             return TypedActionResult.pass(player.getStackInHand(handIn));
@@ -49,7 +48,7 @@ public class PortableJukeboxItem extends Item {
 
         if (player.isSneaking()) {
             stack.removeSubTag("Disc");
-            stack.getOrCreateTag().put("Disc", ItemStack.EMPTY.toTag(new CompoundTag()));
+            stack.getOrCreateTag().put("Disc", ItemStack.EMPTY.writeNbt(new NbtCompound()));
             player.giveItemStack(new ItemStack(disc));
 
             if (!world.isClient) {
@@ -68,9 +67,9 @@ public class PortableJukeboxItem extends Item {
     @Override
     @Environment(EnvType.CLIENT)
     public void appendTooltip(ItemStack stack, World worldIn, List<Text> tooltip, TooltipContext flagIn) {
-        CompoundTag tag = stack.getOrCreateSubTag("Disc");
+        NbtCompound tag = stack.getOrCreateSubTag("Disc");
 
-        ItemStack discStack = ItemStack.fromTag(tag);
+        ItemStack discStack = ItemStack.fromNbt(tag);
 
         if (discStack.getItem() != Items.AIR)
             tooltip.add(new LiteralText("Disc: ").append(((MusicDiscItem) discStack.getItem()).getDescription()));
@@ -98,7 +97,7 @@ public class PortableJukeboxItem extends Item {
             jukeboxes = new ArrayList<>();
             Registry.ITEM.stream()
                     .filter(it -> it instanceof MusicDiscItem)
-                    .map(item -> item.getDefaultStack().toTag(new CompoundTag()))
+                    .map(item -> item.getDefaultStack().writeNbt(new NbtCompound()))
                     .forEach(tag -> {
                         ItemStack stack = new ItemStack(PortableJukeboxMod.PORTABLE_JUKEBOX);
                         stack.getOrCreateTag().put("Disc", tag);
