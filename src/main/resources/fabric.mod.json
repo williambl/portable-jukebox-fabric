@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "portablejukebox",
   "version": "${version}",
 
   "name": "Portable Jukebox",
@@ -10,7 +10,8 @@
   ],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/portable-jukebox-fabric",
-    "sources": "https://github.com/williambl/portable-jukebox-fabric"
+    "sources": "https://github.com/williambl/portable-jukebox-fabric",
+    "issues": "https://github.com/williambl/portable-jukebox-fabric/issues"
   },
 
   "license": "MIT",
